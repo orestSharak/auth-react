@@ -1,7 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {auth} from '../firebase';
 
-
 const AuthContext = createContext(undefined);
 
 export function useAuth() {
@@ -9,18 +8,24 @@ export function useAuth() {
 }
 
 export function AuthProvider({children}) {
+
   const initialState = JSON.parse(localStorage.getItem('userData')) || [];
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [counter, setCounter] = useState(initialState.counter);
+  const [counter, setCounter] = useState(initialState.counter || 0);
 
   const userData = {
-    user: currentUser && currentUser.email,
+    user: currentUser && currentUser.displayName,
     counter
   };
 
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+  function signup(email, password, name) {
+    return auth.createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        if (userCredentials.user) {
+          userCredentials.user.updateProfile({displayName: name})
+        }
+      })
   }
 
   function login(email, password) {
@@ -32,19 +37,19 @@ export function AuthProvider({children}) {
   }
 
   function incrementCounter() {
-    return setCounter(prev => prev + 1)
+    setCounter(prev => prev + 1)
   }
 
   function decrementCounter() {
-    return setCounter(prev => (prev > 0) ? prev - 1 : prev)
+    setCounter(prev => (prev > 0) ? prev - 1 : prev)
   }
 
   useEffect(() => {
     localStorage.setItem('userData', JSON.stringify(userData));
-  },[counter]);
+  }, [counter]);
 
   useEffect(() => {
-    const unsubscribe =  auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
       setLoading(false);
     });
@@ -57,7 +62,6 @@ export function AuthProvider({children}) {
     login,
     logout,
     currentUser,
-
     counter,
     decrementCounter,
     incrementCounter

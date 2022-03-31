@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Button, Card, Container, ListGroup} from "react-bootstrap";
+import React, {useState} from 'react';
+import {Alert, Button, Card, Container} from "react-bootstrap";
 import {useAuth} from "../context/AuthContext";
-import {useNavigate} from "react-router-dom";
 import Posts from "./Posts";
 
 
 function Dashboard() {
 
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-  const {logout, currentUser, counter, incrementCounter, decrementCounter} = useAuth();
+  const [error] = useState('');
+  const {currentUser, incrementCounter, decrementCounter} = useAuth();
 
 
   return (
@@ -19,7 +17,7 @@ function Dashboard() {
           <Card.Body className="text-center">
             <h2 className="mb-4">Profile</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-            <strong>Email:</strong> {currentUser.email}
+            <strong>Name:</strong> {currentUser.displayName}
           </Card.Body>
         </Card>
         <div className="w-100 text-center mt-2">

@@ -29,8 +29,9 @@ const Posts = () => {
     .map(post => <ListGroup.Item key={post.id}>{post.title}</ListGroup.Item>);
 
   return (
-    <Container className="d-flex flex-column align-items-center mt-5" style={{minHeight: "100vh"}}>
-      <div className="w-100" style={{maxWidth: '400px'}}>
+    <Container className="d-flex flex-column align-items-start mt-5">
+      <div className="w-100" style={{maxWidth: '500px'}}>
+        {posts.length > 0 && <p className="col-md-8 fs-4">Your posts</p>}
         <ListGroup>
           {allPosts}
         </ListGroup>

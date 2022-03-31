@@ -19,27 +19,17 @@ const NavbarComponent = () => {
     }
   }
 
-  let style = {
-    textDecoration: 'none',
-    color: "white",
-    active: {
-      color: "red"
-    }
-
-
-  };
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
         <Nav className="me-auto">
           <Nav.Link as={Link} to='/'>Home</Nav.Link>
+          <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
-          {!currentUser && <Nav.Link as={Link} to='/login'>Log In</Nav.Link>}
-          {currentUser && <Nav.Link onClick={handleLogOut}>Log Out</Nav.Link>}
-          <Nav.Link as={Link} to='/signup'>Sign Up</Nav.Link>
-
+          {currentUser
+            ? <Nav.Link onClick={handleLogOut}>Log Out</Nav.Link>
+            : <Nav.Link as={Link} to='/login'>Log In</Nav.Link>}
         </Nav>
       </Container>
     </Navbar>

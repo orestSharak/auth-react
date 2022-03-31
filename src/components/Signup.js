@@ -5,6 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 
 function Signup() {
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -21,7 +22,7 @@ function Signup() {
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(emailRef.current.value, passwordRef.current.value, nameRef.current.value);
       navigate("/dashboard");
     } catch (e) {
       setError("Failed to create an account");
@@ -32,13 +33,17 @@ function Signup() {
   }
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{minHeight: "100vh"}}>
+    <Container className="d-flex align-items-center justify-content-center" style={{minHeight: "calc(100vh - 68px)"}}>
       <div className="w-100" style={{maxWidth: '400px'}}>
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">Sign up</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
+              <Form.Group id="name">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="name" ref={nameRef} required/>
+              </Form.Group>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" ref={emailRef} required/>
